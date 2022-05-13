@@ -1,0 +1,53 @@
+{
+    "name": "deriv",
+    "version": "1.0.0",
+    "description": "test",
+    "main": "./src/index.js",
+    "scripts": {
+        "start": "webpack-dev-server --config build/webpack.dev.conf.js --watch ",
+        "build": "webpack --config build/webpack.prod.conf.js"
+    },
+    "license": "ISC",
+    "devDependencies": {
+        "@babel/core": "^7.6.4",
+        "@babel/helper-compilation-targets": "^7.14.4",
+        "@babel/plugin-transform-runtime": "^7.17.0",
+        "@babel/polyfill": "^7.6.0",
+        "@babel/preset-env": "^7.6.3",
+        "@babel/preset-react": "^7.16.7",
+        "@webpack-cli/serve": "^1.6.1",
+        "autoprefixer": "^9.7.1",
+        "babel-loader": "^8.0.6",
+        "clean-webpack-plugin": "^3.0.0",
+        "copy-webpack-plugin": "^5.0.5",
+        "css-loader": "^3.6.0",
+        "ejs-loader": "^0.3.5",
+        "extract-loader": "^3.1.0",
+        "file-loader": "^4.3.0",
+        "glob": "^7.1.6",
+        "html-loader": "^0.5.5",
+        "html-webpack-plugin": "^3.2.0",
+        "iso-639-1": "^2.1.1",
+        "less-loader": "^10.2.0",
+        "mini-css-extract-plugin": "^0.8.0",
+        "postcss-import": "^12.0.1",
+        "postcss-loader": "^3.0.0",
+        "precss": "^4.0.0",
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0",
+        "sass-loader": "^8.0.2",
+        "style-loader": "^3.3.1",
+        "url-loader": "^2.2.0",
+        "webpack": "^4.42.1",
+        "webpack-cli": "^3.3.11",
+        "webpack-dev-server": "^3.11.2",
+        "webpack-merge": "^4.2.2",
+        "whatwg-fetch": "^3.0.0"
+    },
+    "dependencies": {
+        "@babel/runtime": "^7.17.9",
+        "core-js": "^3.3.6",
+        "lightweight-charts": "^3.8.0",
+        "node-sass": "^4.14.1"
+    }
+}
