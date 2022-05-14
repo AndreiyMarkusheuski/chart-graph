@@ -39,11 +39,6 @@ const Symbols = ({ setActiveSymbol }) => {
     };
   }, []);
 
-  const handleClick = (symbol) => {
-    setActiveSymbol(symbol);
-    setDropdownActive(false);
-  };
-
   const setFilter = (e) => {
     const value = e.target.value;
     setInputValue(value);
@@ -63,7 +58,7 @@ const Symbols = ({ setActiveSymbol }) => {
             {filteredSymbols.map(({ name, symbol }) => (
               <li
                 onClick={() => {
-                  handleClick({ name, symbol });
+                  setActiveSymbol({ name, symbol });
                 }}
                 className="symbols__list_item"
                 key={symbol}

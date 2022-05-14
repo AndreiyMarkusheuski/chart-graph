@@ -1,11 +1,24 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { createChart, CrosshairMode } from "lightweight-charts";
 
-const Chart = ({ tiсks }) => {
+const Chart = ({ tiсks, candles }) => {
   const chartContainerRef = useRef();
   const chart = useRef();
   const areaSeries = useRef();
+  const candlestickSeries = useRef();
   const resizeObserver = useRef();
+  const [isScrollPlus, setIsScrollPlus] = useState(false);
+
+  const onWheelScroll = (e) => {
+    let wheelDelta = e.deltaY || e.detail || e.wheelDelta;
+    if (wheelDelta > 2) {
+      !isScrollPlus || setIsScrollPlus(false);
+    }
+
+    if (wheelDelta < -2) {
+      isScrollPlus || setIsScrollPlus(true);
+    }
+  };
 
   useEffect(() => {
     chart.current = createChart(chartContainerRef.current, {
@@ -42,11 +55,33 @@ const Chart = ({ tiсks }) => {
       wickDownColor: "#838ca1",
       wickUpColor: "#838ca1",
     });
+
+    candlestickSeries.current = chart.current.addCandlestickSeries({
+      priceScaleId: "left",
+    });
   }, []);
 
   useEffect(() => {
-    areaSeries.current.setData(tiсks);
+    if (isScrollPlus) {
+      areaSeries.current.setData(tiсks);
+      candlestickSeries.current.setData([]);
+    } else {
+      areaSeries.current.setData([]);
+      candlestickSeries.current.setData(candles);
+    }
+  }, [isScrollPlus, tiсks, candles]);
+
+  useEffect(() => {
+    if (tiсks) {
+      areaSeries.current.setData(tiсks);
+    }
   }, [tiсks]);
+
+  useEffect(() => {
+    if (candles) {
+      candlestickSeries.current.setData(candles);
+    }
+  }, [candles]);
 
   useEffect(() => {
     resizeObserver.current = new ResizeObserver((entries) => {
@@ -63,7 +98,13 @@ const Chart = ({ tiсks }) => {
   }, []);
 
   return (
-    <div className="chart">
+    <div
+      className="chart"
+      onWheel={onWheelScroll}
+      onTouchStart={(e) => {
+        console.log("asdsdafs");
+      }}
+    >
       <div ref={chartContainerRef} className="chart-container" />
     </div>
   );

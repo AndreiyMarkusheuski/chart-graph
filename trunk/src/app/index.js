@@ -38,3 +38,24 @@ const App = () => {
 };
 
 export default App;
+
+
+export const parseTicks = (data) => {
+  const {history} = data;
+  const [prices, times] = Object.values(history);
+  return prices.reduce((acc, item, index) => {
+      acc[index] = {
+      value: item,
+      time: times[index] * 1000,
+      };
+      return acc;
+  }, [])
+};
+export const parseCandles = (data) => {
+  const {candles} = data;
+  return candles.map(item => {
+      const {epoch, ...rest} = item
+      return {...rest, time: epoch*1000}
+  })
+};
+export const parseForCache = () => {};

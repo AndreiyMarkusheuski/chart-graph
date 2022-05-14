@@ -7,8 +7,8 @@ import { parseCandles, parseTicks, parseForCache } from "../../helpers";
 import "./style.scss";
 
 const Charts = ({ active_currency }) => {
-  const [tiсks, setTiсks] = useState({});
-  const [tickStyle, setTickStyle] = useState('ticks');
+  const [tiсks, setTiсks] = useState([]);
+  const [tickStyle, setTickStyle] = useState("ticks");
   const [cache, setCache] = useState({});
 
   const ws = new WebSocket(WSS_URL);
@@ -25,7 +25,7 @@ const Charts = ({ active_currency }) => {
             end: "latest",
             start: 1,
             count: 1000,
-            style: 'ticks',
+            style: `${tickStyle}`,
           })
         );
         ws.send(
@@ -35,25 +35,38 @@ const Charts = ({ active_currency }) => {
             end: "latest",
             start: 1,
             count: 1000,
-            style: 'candles',
+            style: "candles",
           })
         );
       };
 
       ws.addEventListener("message", (e) => {
-        const data = JSON.parse(e.data)
-        if (data["error"]) throw new Error(data["error"]["message"])
-        const {echo_req: {ticks_history}} = data;
-        const parsedData = data.msg_type === TICKS ? parseTicks(data) : parseCandles(data)
+        const data = JSON.parse(e.data);
+        if (data["error"]) throw new Error(data["error"]["message"]);
+        const {
+          echo_req: { ticks_history },
+        } = data;
+        const parsedData =
+          data.msg_type === TICKS ? parseTicks(data) : parseCandles(data);
 
-        setCache(prev => {
-          const copy = {...prev};
-          copy[ticks_history] = {...copy[ticks_history], ...parsedData }
-          return copy
-        })
+        setCache((prev) => {
+          const copy = { ...prev };
 
-        setTiсks(prev => {
-          return {...prev, ...parsedData}
+          copy[ticks_history] = copy[ticks_history]
+            ? copy[ticks_history].map((item, index) => ({
+                ...item,
+                ...parsedData[index],
+              }))
+            : [...parsedData];
+          return copy;
+        });
+
+        setTiсks((prev) => {
+          let a = prev.length < 1
+            ? [...parsedData]
+            : prev.map((item, index) => ({ ...item, ...parsedData[index] }));
+            console.log(a)
+            return a
         });
       });
 
@@ -69,7 +82,7 @@ const Charts = ({ active_currency }) => {
 
   return (
     <div className="chart">
-      {tiсks[TICKS] && tiсks[CANDLES] && (<Chart tiсks={tiсks[TICKS]} candles={tiсks[CANDLES]} />)}
+      <Chart tiсks={tiсks} />
     </div>
   );
 };
