@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Symbols from "./components/symbols";
-import Charts from "./components/charts";
+import Currencies from "./components/currencies";
+import Charts from "./components/trading-view";
 import {
   getStorageСurrency,
   setStorageСurrency,
@@ -16,7 +16,7 @@ const App = () => {
     setStorageСurrency(currency);
     setActiveSymbol(currency);
   };
-
+  
   return (
     <div className="main">
       <div className="container">
@@ -25,12 +25,11 @@ const App = () => {
             <h1 className="content__top_headline">
               Chart for {active_currency.name}
             </h1>
-            <Symbols
-              active_currency={active_currency}
+            <Currencies
               setActiveSymbol={updateActiveSymbol}
             />
           </div>
-          <Charts active_currency={active_currency} />
+          <Charts active_symbol={active_currency.symbol} />
         </section>
       </div>
     </div>

@@ -1,8 +1,17 @@
-.symbols {
+.currencies {
     width: 80%;
     display: flex;
     justify-content: flex-start;
     flex-direction: row;
+
+    &__input {
+        background: #000;
+        color: #FFF;
+        outline: none;
+        border: 1px solid #FFF;
+
+        padding: 5px 10px;
+    }
 
     &__control {
         display: flex;
