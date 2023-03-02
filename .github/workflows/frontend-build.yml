@@ -1,4 +1,4 @@
-name: FE build
+name: Production build
 
 on:
   push:
@@ -11,8 +11,11 @@ jobs:
     strategy:
       matrix:
         os:
-          - macos-latest
-        node-version: [14.x]
+          - ubuntu-latest
+          ## - macos-latest
+          ## - windows-latest
+        node-version: 
+          - '14.12.1'
         
     runs-on: ${{ matrix.os }}
 
@@ -24,7 +27,8 @@ jobs:
         timeZone: 8
         format: 'YYYY-MM-DD-HH-mm-ss'
         
-    - uses: actions/checkout@v3
+    - name: SCM Checkout
+      uses: actions/checkout@v3
 
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
