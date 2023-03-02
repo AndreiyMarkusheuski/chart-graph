@@ -1,0 +1,44 @@
+name: FE build
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x]
+
+    steps:
+    - name: Get Timestamp
+      id: time
+      uses: nanzm/get-time-action@v1.1
+      with:
+        timeZone: 8
+        format: 'YYYY-MM-DD-HH-mm-ss'
+        
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install Node Modules
+      working-directory: 'trunk'
+      run: npm install
+      
+    - name: Build Node Frontend
+      working-directory: 'trunk'
+      run: npm run build
+
+    - name: Upload Frontend Package
+      uses: actions/upload-artifact@v3
+      with:
+          name: frontend-release-${{ steps.time.outputs.time }}
+          path: 'trunk/build'
