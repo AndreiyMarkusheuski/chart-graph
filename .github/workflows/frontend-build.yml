@@ -8,11 +8,13 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-
     strategy:
       matrix:
-        node-version: [14.x, 16.x, 18.x]
+        os:
+          - macos-latest
+        node-version: [14.x]
+        
+    runs-on: ${{ matrix.os }}
 
     steps:
     - name: Get Timestamp
